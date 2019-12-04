@@ -1,0 +1,116 @@
+.chateRoom{
+    /* height: 90vh; */
+    display: flex;
+    background-size: cover;
+    justify-content: space-between;
+}
+
+.chateRoom .friendList{    
+    flex: 1 1;
+    overflow: auto;
+    text-align: left;
+    padding: 0px 10px;
+    background-color:#00000086;
+}
+
+.friendList .list{
+    display: flex;
+    cursor: pointer;
+    color: #000000;
+    margin: 10px 0px;
+    border: 1px solid;
+    align-items: center;
+   background-color:#dcdcdc;
+   border-radius: 34px 5px 5px 34px;
+}
+
+.friendList .list:hover{
+    transition-delay: 0.2s;
+    background-color:#dcdcdcd8;
+    transition: all linear 0.2s;
+}
+
+.friendList .list img{
+   width: 60px;
+   border-radius:200% ;
+}
+
+.friendList .list p{
+    font-size: 19px ;
+    font-weight: 300;
+    padding: 0px 10px;
+}
+
+.chateRoom .messageList{
+    flex: 3;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+ 
+.chateRoom .messageList .messages {
+    flex: 2;
+}
+
+.chateRoom .messageList .messages .sendMsg{
+    text-align: right;
+}
+
+.chateRoom .messageList .messages .sendMsg div p {
+    max-width: 60vw;
+    font-size: 19px;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 10px 0px;
+    text-align: justify;
+    display: inline-block;
+    padding: 8px 36px 8px 36px;
+    background-color: #708090;
+    border-radius: 50px 5px 5px 50px;
+    box-shadow: slategrey 1px 0px 6px -1px;
+}
+
+
+.chateRoom .messageList .messages .resevMsg{
+    text-align: left;   
+}
+
+.chateRoom .messageList .messages .resevMsg div p{ 
+    color: black;
+    max-width: 60vw;
+    font-size: 19px;
+    margin: 10px 0px;
+    font-weight: 500;
+    display: inline-block;
+    padding: 8px 36px 8px 36px;
+    background-color: #DCDCDC;
+    border-radius: 5px 50px 50px 5px;
+    box-shadow: slategrey 1px 0px 6px -2px;
+}
+
+.chateRoom .messageList .input{
+    flex: 0;
+    display: flex;
+}
+
+.chateRoom .messageList .input input {
+    width: 91%;
+    padding: 10px; 
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #ffffff;
+    border: 1px solid #708090;
+    padding: 10px 0px 10px 20px;
+}
+
+.chateRoom .messageList .input button {
+    width: 100px;
+    padding: 10px;
+    outline: none;
+    font-size: 16px;
+    color: #faf8f8;
+    font-weight: 600;
+    border: 1px solid #708090;
+    background-color: #708090;
+}
+

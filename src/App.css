@@ -1,0 +1,40 @@
+.App {
+  height: 100vh;
+  text-align: center;
+  background-color: #F5F5F5	;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.App .nave{
+  width: 100%;
+  display: flex;
+  height: 9.99vh;
+  flex-wrap: wrap;
+  color: #ffffff;
+  align-items: center;
+  background-color:	#708090;
+  justify-content: space-between;
+}
+
+.App  .nave .logo a{
+  left: 40px;
+  font-size: 28px;
+  font-weight: 900;
+  position: relative;
+}
+
+.link ul{
+  right: 40px;
+  list-style: none;
+  position: relative;
+}
+
+.link .list li{
+  padding: 10px;
+  display: inline;
+}
+
+.link .list li a{
+  font-weight: 500;
+  font-size: 16px;
+}

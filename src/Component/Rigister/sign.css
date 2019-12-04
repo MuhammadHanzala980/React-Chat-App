@@ -1,0 +1,34 @@
+.form1{
+    right: 40px;
+    position: relative;
+}
+
+.form1 .inputFeilds1{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.form1 .inputFeilds1 input{
+    margin: 10px 5px;
+    width: 290px;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px ;
+    border: 1px solid;
+    border-radius: 5px;
+    background-color: #faf8f8;
+}
+
+
+.inputFeilds1 button{
+    border: none;
+    width: 100px;
+    padding: 10px ;
+    font-size: 16px;
+    color:#5d5d5d;
+    margin:10px 5px;
+    font-weight: 600;
+    border-radius: 5px;
+    background-color: #faf8f8;
+}
