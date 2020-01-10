@@ -1,67 +1,55 @@
 import firebase from 'firebase';
-import './style.css'
-import history from '../../history';
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { selectUser } from '../../store/action';
 
-class Users extends Component {
+class Request extends Component {
     constructor() {
         super()
         let cUser = JSON.parse(localStorage.getItem('userData'))
         this.state = {
-            acc: [],
-            request: [],
-            accounts: [],
             currentUser: cUser,
-            sender: cUser.userId
+            reqArr: []
         }
     }
 
     componentDidMount() {
         const { currentUser } = this.state
         let db = firebase.database().ref('/')
-        let arr = []
-        db.child('/users/').on('value', (user) => {
-            let data = user.val()
-            for (let k in data) {
-                if (data[k].userId !== this.state.sender) {
-                    arr.push({ ...data[k], k })
-                }
-                this.setState({ accounts: arr, })
-            }
-        })
         db.child(`rooms/${currentUser.id}/sendFriendRequest/`).on('value', (snap) => {
-            let reqArr = []
-            let req = snap.val()
-            for (let k in req) {
-                reqArr.push({ ...req[k], k })
+            let data = snap.val()
+            let arr = []
+            for (var k in data) {
+                arr.push({ ...data[k], k })
             }
-            this.setState({ request: reqArr })
+            this.setState({ reqArr: arr })
         })
     }
 
-    startMessage(a) {
+    acceptRequest(ev) {
         const { currentUser } = this.state
         let db = firebase.database().ref('/')
-        db.child(`rooms/${currentUser.id}/startMessage/${a.userId}`).set(a)
-        db.child(`rooms/${a.userId}/startMessage/${currentUser.id}`).set(currentUser)
-        this.props.selectUser(a)
-        history.push('/chat')
+        db.child(`rooms/${currentUser.id}/friends/${ev.id}/`).set(ev)
+        db.child(`rooms/${ev.id}/friends/${currentUser.id}`).set(currentUser)
+        db.child(`rooms/${currentUser.id}/sendFriendRequest/${ev.id}`).remove()
+        db.child(`rooms/${ev.id}/sendFriendRequest/${currentUser.id}`).remove()
+
     }
 
-    sendFriendRequest(a) {
+    deleteRequest(ev) {
         const { currentUser } = this.state
         let db = firebase.database().ref('/')
-        db.child(`rooms/${a.userId}/sendFriendRequest/${currentUser.id}`).set(currentUser)
+        db.child(`rooms/${currentUser.id}/sendFriendRequest/${ev.id}`).remove()
+        db.child(`rooms/${ev.id}/sendFriendRequest/${currentUser.id}`).remove()
     }
 
     render() {
+        const { reqArr } = this.state
         return (
-            <div className='container'>
-                <div className='userlist'>
-                    <h1>Friend List</h1>
-                    {this.state.accounts.map((v, i) => {
+            <div>
+                <div>
+                    <div className='heading'>
+                        <h2>Request</h2>
+                    </div>
+                    {reqArr.map((v, i) => {
                         return (
                             <div key={i} className='list' >
                                 <div className='listItem'>
@@ -69,8 +57,8 @@ class Users extends Component {
                                     <p> {v.fName}</p>
                                 </div>
                                 <div className='iconBut'>
-                                    <span onClick={this.startMessage.bind(this, v)} className='times' ><i className="fas fa-comments"></i></span>
-                                    <span onClick={this.sendFriendRequest.bind(this, v)} className='check' ><i className="fas fa-user-plus"></i></span>
+                                    <span onClick={this.acceptRequest.bind(this, v)} className='check' ><i className="fas fa-check-circle"></i></span>
+                                    <span onClick={this.deleteRequest.bind(this, v)} className='times' ><i className="fas fa-times-circle"></i></span>
                                 </div>
                             </div>
                         )
@@ -81,12 +69,5 @@ class Users extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return ({
-        selectUser: (user) => {
-            dispatch(selectUser(user))
-        }
-    })
-};
+export default Request
 
-export default connect(null, mapDispatchToProps)(Users)

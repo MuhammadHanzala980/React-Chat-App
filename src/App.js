@@ -3,13 +3,12 @@ import firebase from 'firebase';
 import history from './history';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import Users from './Component/Users/users';
 import Chate from './Component/chate/chate';
+import Users from './Component/Users/users';
+import { authChack, isLogedin } from './store/action';
 import SignIn from './Component/Rigister/signIn';
 import SignUp from './Component/Rigister/signUp';
-import { simpleAction } from './store/action'
 import { Router, Route, Redirect } from "react-router-dom";
-// import Auth from './Component/Rigister/signIn'
 var firebaseConfig = {
   apiKey: "AIzaSyDy-aiJXge7qUprO4ymfH-sUZGflFTs8N0",
   authDomain: "chate-app-41aad.firebaseapp.com",
@@ -22,31 +21,30 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-
 const Auth = {
   isAuthenticated: false,
+  auth: JSON.parse(localStorage.getItem("userData")),
 
   authenticate() {
     this.isAuthenticated = true
   },
   logout() {
-    this.isAuthenticated = false
+    this.isAuthenticated = false;
+    localStorage.clear()
   },
   getAuth() {
-    return this.isAuthenticated
+    return this.isAuthenticated;
   }
 }
 
-const login = () => (
+if (Auth.auth !== null) {
   Auth.authenticate()
-)
-
-var auth = JSON.parse(localStorage.getItem("userData"))
-const AuthChack = (auth) => {
-  if (auth !== null) {
-    login()
-  }
 }
+
+else {
+  Auth.logout()
+}
+
 
 const PrivetRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => Auth.getAuth() ? <Component /> : <Redirect to={{
@@ -54,74 +52,75 @@ const PrivetRoute = ({ component: Component, ...rest }) => (
   }} />} />
 )
 
-
 class App extends Component {
   constructor() {
     super()
     this.state = {
     }
+  }
 
+  componentDidMount() {
+    this.props.authChack(Auth)
   }
-  a() {
-    this.props.simpleAction( '66666' )
+
+  signOut() {
+    Auth.logout()
+    this.props.isLogedin(false)
+    this.props.item.auth.logout()
   }
-  
+
   render() {
-    console.log(this.props.state)
-    AuthChack()
-    const isLoggedIn = auth
     return (
       <div className="App">
         <div className='nave'>
-          <div className='logo'><a>LOGO</a></div>
-          {isLoggedIn ? (
-            <div className='link'>
-              <ul className='list'>
-                <li><a>HOME</a></li>
-                <li onClick={() => { history.push('/chat') }} ><a>CHATE</a></li>
-                <li><a>SETTING</a></li>
-                <li onClick={() => { history.push('/users') }} ><a>FRIENDS</a></li>
-              </ul>
-            </div>
-          ) : (
-              <div className='signInForm'>
-                <SignIn history={history} />
+          <div className='logo'>LOGO</div>
+          {
+            Auth.isAuthenticated ? (
+              <div className='link'>
+                <ul className='list'>
+                  <li onClick={() => { history.push('/chat') }} ><i className="fas fa-comment"></i></li>
+                  <li onClick={() => { history.push('/users') }} ><i className="fas fa-globe-africa"></i></li>
+                  <li onClick={this.signOut.bind(this)}><i className="fas fa-sign-out-alt"></i></li>
+                  <li><i className="fas fa-cog"></i></li>
+                </ul>
+                <div className='menu' >
+                  <i className="far fa-caret-square-down"></i>
+                </div>
               </div>
-            )}
+
+            ) : (
+                <div className='signInForm'>
+                  <SignIn history={history} />
+                </div>
+              )}
         </div>
         <Router history={history} >
           <div>
-            <Route path='/' exact component={SignUp} />
-            <Route path='/chat' component={Chate} />
-            <Route path='/users' component={Users} />
+            <Route path='/' exact component={SignUp}  />
+            <PrivetRoute path='/chat' component={Chate} />
+            <PrivetRoute path='/users' component={Users} />
           </div>
         </Router>
-        {/* {isLoggedIn ? (<Chate />) : (<SignUp />)} */}
-        <button onClick={this.a.bind(this)}>Poaoaoaoaao</button>
       </div>
     );
   }
 }
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     simpleAction: (id) => {
-//       dispatch(simpleAction(id))
-//     }
-//   }
-// }
+
 const mapDispatchToProps = (dispatch) => {
   return ({
-    simpleAction: (user) => {
-      console.log(user)
-      dispatch(simpleAction(user))
+    authChack: (user) => {
+      dispatch(authChack(user))
+    },
+    isLogedin: (e) => {
+      dispatch(isLogedin(e))
     }
   })
 };
 
 const mapStateToProps = (state) => {
   return {
-    state
+    item: state
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
 import firebase from 'firebase';
-import history from'../../history'
+import history from '../../history';
+import { connect } from 'react-redux';
+import { authChack, isLogedin } from '../../store/action'
+import React, { useState } from 'react';
 import './sign.css';
-export default (props) => {
-    console.log(props)
+function SignIn(props) {
+    console.log(props.item)
     const [email, setEmail] = useState('')
     const [pwd, setPwd] = useState('')
-
     function getValue(e) {
         if (e.target.name === 'email') {
             setEmail(e.target.value)
@@ -16,9 +17,9 @@ export default (props) => {
         }
     }
 
-    function signInFun() {
+    function signInFun(ev) {
+        ev.preventDefault()
         let userObj = { email, pwd }
-
         let db = firebase.database().ref('/')
         firebase.auth().signInWithEmailAndPassword(email, pwd).then((success) => {
             db.child('/users/' + success.user.uid).on('value', (currentUser) => {
@@ -26,32 +27,44 @@ export default (props) => {
                 userObj.id = currentUser.key
                 var userData = JSON.stringify(userObj)
                 localStorage.setItem("userData", userData)
-                    history.push("/chat")
+                props.item.authenticate()
+                props.isLogedin(true)
+                history.push("/chat")
+
             })
         }).catch((error) => {
-            // var errorCode = error.code;
             var errorMessage = error.message;
             alert(errorMessage)
         });
-
-        // history.push("/chat");
     }
 
     return (
         <div className='form1'>
             <div className='inputFeilds1' >
-                <input type='text' name='email' value={email} onChange={getValue} placeholder='Inter Your Email ' />
-                <input type='password' name='pwd' value={pwd} onChange={getValue} placeholder='Inter Your Password' />
-                <button onClick={signInFun} >Sign In</button>
+                <form onSubmit={signInFun}>
+                    <input type='text' name='email' value={email} onChange={getValue} placeholder='Inter Your Email ' />
+                    <input type='password' name='pwd' value={pwd} onChange={getValue} placeholder='Inter Your Password' />
+                    <button onClick={signInFun} >Sign In</button>
+                </form>
             </div>
         </div>
     )
 }
 
-// export default () => {
-//     return (
-//         <div>
-//             <SignIn />
-//         </div>
-//     )
-// }
+const mapDispatchToProps = (dispatch) => {
+    return ({
+        authChack: (user) => {
+            dispatch(authChack(user))
+        },
+        isLogedin: (e) => {
+            dispatch(isLogedin(e))
+        }
+    })
+};
+
+const mapStateToProps = (state) => {
+    return {
+        item: state.auth
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

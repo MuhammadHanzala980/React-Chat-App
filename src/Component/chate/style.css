@@ -1,12 +1,30 @@
 .chateRoom{
-    /* height: 90vh; */
     display: flex;
     background-size: cover;
     justify-content: space-between;
 }
 
+.chateRoom .sideNav {
+    flex: 0.7;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #747474b0;
+}
+
+.sideNav span {
+    font-size: 30px;
+    margin: 40px 0px;
+    color: #F5F5F5;
+}
+
+.sideNav span:hover{
+    color: #525252;
+    transition: all linear 0.2s;
+}
+
 .chateRoom .friendList{    
-    flex: 1 1;
+    flex: 3 1;
     overflow: auto;
     text-align: left;
     padding: 0px 10px;
@@ -20,8 +38,38 @@
     margin: 10px 0px;
     border: 1px solid;
     align-items: center;
-   background-color:#dcdcdc;
-   border-radius: 34px 5px 5px 34px;
+    background-color:#dcdcdc;
+    border-radius: 34px 5px 5px 34px;
+}
+ 
+.friendList .list .listItem{
+    flex: 2;
+    display: flex;
+}
+
+.friendList .heading{
+    color: #f0f0f0;
+    padding: 5px 15px;
+    margin: 0px -10px 12px;
+    background-color: #383838;
+}
+
+.friendList .list .iconBut{
+   flex: 1;
+   text-align: right;
+}
+
+.list .iconBut span{
+    font-size: 19px;
+    margin: 0px 10px;
+}
+
+.list .iconBut .check{
+    color: #0e7206;
+}
+
+.list .iconBut .times{
+    color: #708090;
 }
 
 .friendList .list:hover{
@@ -42,14 +90,14 @@
 }
 
 .chateRoom .messageList{
-    flex: 3;
+    flex: 8;
     height: 90vh;
     display: flex;
     flex-direction: column;
 }
  
 .chateRoom .messageList .messages {
-    flex: 2;
+    flex: 1;
 }
 
 .chateRoom .messageList .messages .sendMsg{
@@ -69,7 +117,6 @@
     border-radius: 50px 5px 5px 50px;
     box-shadow: slategrey 1px 0px 6px -1px;
 }
-
 
 .chateRoom .messageList .messages .resevMsg{
     text-align: left;   
@@ -105,12 +152,40 @@
 
 .chateRoom .messageList .input button {
     width: 100px;
-    padding: 10px;
+    padding: 7px;
     outline: none;
-    font-size: 16px;
+    font-size: 21px;
     color: #faf8f8;
-    font-weight: 600;
+    font-weight: 100;
     border: 1px solid #708090;
     background-color: #708090;
 }
 
+@media all and (max-width: 800px){
+ .chateRoom{
+     flex-direction: column;
+ }   
+
+ .chateRoom .friendList{
+     display: none;
+ }
+
+ .chateRoom .sideNav{
+     padding: 1px;
+     align-items: center;
+     flex-direction: row;
+     justify-content: space-around;
+ }
+
+ .sideNav span {
+     padding: 5px;
+     margin: 0px;
+     font-size: 25px;
+     color: #747474;
+    }
+
+ .chateRoom .messageList{
+    height: 84vh;
+    margin-bottom: 0px;
+ }
+}

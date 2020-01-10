@@ -16,6 +16,10 @@
   justify-content: space-between;
 }
 
+.App .nave .link .menu {
+  display: none;
+}
+
 .App  .nave .logo a{
   left: 40px;
   font-size: 28px;
@@ -30,11 +34,31 @@
 }
 
 .link .list li{
-  padding: 10px;
+  padding: 20px;
   display: inline;
 }
 
 .link .list li a{
   font-weight: 500;
-  font-size: 16px;
+  font-size: 22px;
+}
+
+@media all and (max-width: 800px){
+
+  .App .nave .link .menu {
+    right: 15px;
+    display: block;
+    font-size: 24px;
+    list-style: none;
+    position: relative;
+  }
+  .App .nave .logo a {
+    left: 15px;
+    font-size: 20px;
+    font-weight: 900;
+    position: relative;
+}
+  .App .nave .link .list {
+    display: none;
+  }
 }

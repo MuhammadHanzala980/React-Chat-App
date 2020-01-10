@@ -1,23 +1,13 @@
-// export const simpleAction = (id) => dispatch => {
-//     console.log(id)
-//     dispatch({
-//         type: 'SIMPLE_ACTION',
-//         payload: 'result_of_simple_action'
-//     })
-// }
+export const isLogedin = (data) => ({
+    type: 'isLogedin',
+    payload: data
+})
 
-
-export const simpleAction = (a) => {
-    console.log(a)
-    return {
-        type: 'a',
-        payload: a
-    }
-}
-
-export const selectUser = (data) => {
-    return {
-        type:'selecUser',
-        payload: data,
-    }
-}
+export const authChack = (data) => ({
+    type: 'authChack',
+    payload: data
+})
+export const selectUser = (data) => ({
+    type: 'selecUser',
+    payload: data,
+})

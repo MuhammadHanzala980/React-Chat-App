@@ -1,15 +1,26 @@
-export default (state = {}, action) => {
-    console.log(action.payload)
+const initialState = {
+    user: 'user',
+    auth: 'null',
+    isLogedin: false
+}
+
+const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'a':
+        case 'authChack':
             return {
-                result: action.payload
+                ...state, auth: action.payload
             }
         case 'selecUser':
             return {
-                result: action.payload
-            }
+                ...state, user: action.payload
+            };
+        case 'isLogedin':
+            return {
+                ...state, isLogedin: action.payload
+            };
         default:
-            return state
+            return state;
     }
 }
+
+export default reducer

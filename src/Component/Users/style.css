@@ -1,0 +1,72 @@
+
+.container{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    background-color:#00000086;
+}
+
+.userlist{    
+    /* width: 100%; */
+    overflow: auto;
+    padding: 0px 10px;
+}
+
+.userlist .list{
+    width: 500px;
+    display: flex;
+    cursor: pointer;
+    color: #000000;
+    margin: 10px 0px;
+    border: 1px solid;
+    align-items: center;
+    background-color:#dcdcdc;
+    border-radius: 34px 5px 5px 34px;
+}
+ 
+.userlist .list .listItem{
+    display: flex;
+}
+
+.userlist .heading{
+    color: #f0f0f0;
+    padding: 5px 15px;
+    margin: 0px -10px 12px;
+    background-color: #383838;
+}
+
+.userlist .list .iconBut{
+   flex: 1;
+   text-align: right;
+}
+
+.list .iconBut span{
+    font-size: 19px;
+    margin: 0px 10px;
+}
+
+.list .iconBut .check{
+    color: #0e7206;
+}
+
+.list .iconBut .times{
+    color: #708090;
+}
+
+.userlist .list:hover{
+    transition-delay: 0.2s;
+    background-color:#dcdcdcd8;
+    transition: all linear 0.2s;
+}
+
+.userlist .list img{
+   width: 60px;
+   border-radius:200% ;
+}
+
+.userlist .list p{
+    font-size: 19px ;
+    font-weight: 300;
+    padding: 0px 10px;
+}
+

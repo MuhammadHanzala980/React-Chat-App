@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import firebase from 'firebase'
 import './style.css'
+import history from '../../history'
+import { connect } from 'react-redux';
+import { authChack, isLogedin } from '../../store/action'
 
-function SignUp() {
+
+function SignUp(props) {
     const [fName, setFName] = useState('')
     const [email, setEmail] = useState('')
     const [pwd, setPwd] = useState('')
@@ -19,15 +23,16 @@ function SignUp() {
         }
     }
 
+    console.log(props.item)
     function rigister() {
-        console.log(fName, email, pwd)
+
         let db = firebase.database().ref('/')
         firebase.auth().createUserWithEmailAndPassword(email, pwd)
             .then((success) => {
                 console.log(success, '======> Account Create')
                 let userId = firebase.auth().currentUser.uid;
                 let userObj = {
-                    fName, email, pwd, userId
+                    fName, email, pwd,
                 }
                 firebase.database().ref('users/' + userId).set(userObj)
                     .then((sucs) => {
@@ -40,6 +45,10 @@ function SignUp() {
                                     console.log(userObj)
                                     var userData = JSON.stringify(userObj)
                                     localStorage.setItem("userData", userData)
+                                    history.push("/chat")
+                                    props.isLogedin(true)
+                                    props.item.authenticate()
+
                                 })
                             })
                     })
@@ -55,7 +64,7 @@ function SignUp() {
     return (
         <div className='form' >
             <div className='inputFeilds' >
-                
+
                 <input value={fName} name='fName' onChange={getValue} type='text' placeholder='Full Name' />
                 <input value={email} type='email' name='email' onChange={getValue} placeholder='Email' />
                 <input value={pwd} type='password' name='pwd' onChange={getValue} placeholder='password' />
@@ -66,11 +75,21 @@ function SignUp() {
         </div>
     )
 }
+const mapDispatchToProps = (dispatch) => {
+    return ({
+        authChack: (user) => {
+            dispatch(authChack(user))
+        },
+        isLogedin: (e) => {
+            dispatch(isLogedin(e))
+        }
+    })
+};
 
-export default () => {
-    return (
-        <div>
-            <SignUp />
-        </div>
-    )
+const mapStateToProps = (state) => {
+    return {
+        item: state.auth
+    }
 }
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+
